@@ -109,7 +109,7 @@ docker-compose logs
 
 ## Backend Architecture Diagram
 
-
+<img width="2613" height="3840" alt="architecture" src="https://github.com/user-attachments/assets/51f2fd4d-563a-4a10-ac90-1e478414bfe6" />
 
 ## How to Encode an Image to Base64
 
@@ -134,7 +134,7 @@ Or use an online tool: [https://base64.guru/converter/encode/image](https://base
 - Error messages are returned in JSON for easy handling in the frontend.
 
 ---
-<img width="2613" height="3840" alt="architecture" src="https://github.com/user-attachments/assets/51f2fd4d-563a-4a10-ac90-1e478414bfe6" />
+
 
 ## Example Test Script
 
@@ -144,4 +144,11 @@ See `test_facial_recognition_api.py` for a sample Python script to test registra
 
 ## Need Help?
 - If you have questions about request formats or integration, contact the backend developer.
-- For troubleshooting, check Docker logs or use Postman/curl to test endpoints directly. 
+- For troubleshooting, check Docker logs or use Postman/curl to test endpoints directly.
+
+## Developed By
+
+**Sachin Singh**
+M.Tech CSE, IIT Jodhpur
+
+[LinkedIn](https://www.linkedin.com/in/sachinsingh2156) • [GitHub](https://github.com/sachinsingh2156)
