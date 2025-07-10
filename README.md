@@ -109,7 +109,8 @@ docker-compose logs
 
 ## Backend Architecture Diagram
 
-<img width="2613" height="3840" alt="architecture" src="https://github.com/user-attachments/assets/51f2fd4d-563a-4a10-ac90-1e478414bfe6" />
+<img width="2552" height="3840" alt="face-recognition" src="https://github.com/user-attachments/assets/f30b2984-e164-42b5-9735-8ddc1378567b" />
+
 
 ## How to Encode an Image to Base64
 
