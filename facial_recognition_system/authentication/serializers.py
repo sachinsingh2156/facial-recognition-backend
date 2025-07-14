@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
+    unique_id = serializers.CharField(required=False)
+    name = serializers.CharField(required=False)
     image_width = serializers.IntegerField(required=False, min_value=1)
     image_height = serializers.IntegerField(required=False, min_value=1)
     image_depth = serializers.IntegerField(required=False, min_value=1)
