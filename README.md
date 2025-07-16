@@ -137,25 +137,6 @@ Or use an online tool: [https://base64.guru/converter/encode/image](https://base
 
 ---
 
-## Recent Updates
-
-- **API Error Handling:**
-  - The registration and authentication endpoints now always return JSON responses, even for errors (e.g., duplicate user, server/database errors).
-  - Error messages are clear and user-friendly, e.g., "A user with this username already exists. Please choose a different username." or "Server error: ...".
-- **Frontend Robustness:**
-  - The frontend now gracefully handles non-JSON responses from the backend and displays a user-friendly error message if the server returns an unexpected format.
-- **Database:**
-  - The backend uses **SQLite** by default. There is no PostgreSQL configuration or dependency in this project.
-- **Troubleshooting:**
-  - If you see an error like `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`, it means the backend returned an HTML error page instead of JSON. With the new error handling, you should now see a clear error message in the frontend instead.
-- **Clearing All User Data:**
-  - To delete all users from the database, run:
-    ```bash
-    # From the project root, using the virtual environment
-    venv/bin/python3 facial_recognition_system/manage.py shell -c "from authentication.models import User; User.objects.all().delete(); print('All users deleted.')"
-    ```
-
----
 
 ## Example Test Script
 
