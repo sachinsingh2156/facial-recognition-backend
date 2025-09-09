@@ -50,7 +50,7 @@ async function handleRegister(e) {
     const payload = { unique_id, name, face_image };
     console.log('Register payload:', payload);
     try {
-        const response = await fetch('http://localhost:8000/api/authentication/register/', {
+        const response = await fetch('http://localhost:8053/api/authentication/register/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -80,7 +80,7 @@ async function handleAuthenticate() {
     userInfoDiv.textContent = '';
     const face_image = captureImageBase64(authVideo);
     try {
-        const response = await fetch('http://localhost:8000/api/authentication/authenticate/', {
+        const response = await fetch('http://localhost:8053/api/authentication/authenticate/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ face_image })

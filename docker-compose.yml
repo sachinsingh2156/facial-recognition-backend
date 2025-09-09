@@ -1,9 +1,10 @@
-version: '3'
+version: '3.8'
 services:
   web:
     build: .
-    command: python facial_recognition_system/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8053:8053"
+    environment:
+      - PYTHONUNBUFFERED=1
     volumes:
       - .:/usr/src/app
-    ports:
-      - "8000:8000" 

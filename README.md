@@ -13,7 +13,7 @@ Open a terminal in the project root directory and run:
 docker-compose up --build
 ```
 - This command builds the Docker image (if not already built) and starts the Django server inside a container.
-- The API will be available at: [http://localhost:8000](http://localhost:8000)
+- The API will be available at: [http://localhost:8053](http://localhost:8053)
 
 ### 2. **Apply Migrations (First Run Only)**
 After the container is running for the first time, you need to apply database migrations:
@@ -46,14 +46,14 @@ docker-compose logs
 ```
 
 ### 6. **Accessing the Django Admin**
-- Visit [http://localhost:8000/admin/](http://localhost:8000/admin/) in your browser.
+- Visit [http://localhost:8053/admin/](http://localhost:8053/admin/) in your browser.
 - You may need to create a superuser:
   ```bash
   docker exec -it <container_name> python facial_recognition_system/manage.py createsuperuser
   ```
 
 ### 7. **Common Issues & Troubleshooting**
-- **Port already in use:** Make sure nothing else is running on port 8000.
+- **Port already in use:** Make sure nothing else is running on port 8053.
 - **Module not found:** Ensure you have run `docker-compose build` after changing dependencies.
 - **Database errors:** Make sure migrations are applied as shown above.
 - **File changes not reflected:** If you change code, restart the container or use `docker-compose up --build`.

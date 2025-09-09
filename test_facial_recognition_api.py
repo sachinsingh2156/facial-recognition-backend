@@ -13,17 +13,17 @@ image_path = 'face_test.jpeg'  # Replace with your image file
 base64_image = image_to_base64(image_path)
 
 # Registration endpoint
-register_url = 'http://localhost:8000/api/authentication/register/'
+register_url = 'http://localhost:8053/api/authentication/register/'
 register_payload = {
-    "unique_id": "user123",
-    "name": "John Doe",
+    "unique_id": "ss2233",
+    "name": "sahil",
     "face_image": base64_image
 }
 register_response = requests.post(register_url, json=register_payload)
 print("Registration Response:", register_response.status_code, register_response.json())
 
 # Authentication endpoint
-auth_url = 'http://localhost:8000/api/authentication/authenticate/'
+auth_url = 'http://localhost:8053/api/authentication/authenticate/'
 auth_payload = {
     "face_image": base64_image
 }

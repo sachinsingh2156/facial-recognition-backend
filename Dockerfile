@@ -19,11 +19,11 @@ COPY . .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r facial_recognition_system/requirements.txt
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
+# Make port 8053 available to the world outside this container
+EXPOSE 8053
 
 # Define environment variable
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # Run the command to start the Django server
-CMD ["python", "facial_recognition_system/manage.py", "runserver", "0.0.0.0:8000"] 
+CMD ["python", "facial_recognition_system/manage.py", "runserver", "0.0.0.0:8053"] 
