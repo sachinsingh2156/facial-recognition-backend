@@ -25,5 +25,5 @@ EXPOSE 8053
 # Define environment variable
 ENV PYTHONUNBUFFERED=1
 
-# Run the command to start the Django server
-CMD ["python", "facial_recognition_system/manage.py", "runserver", "0.0.0.0:8053"] 
+# Run migrations and start the Django server (cross-platform)
+CMD ["sh", "-c", "python facial_recognition_system/manage.py migrate && python facial_recognition_system/manage.py runserver 0.0.0.0:8053"]
