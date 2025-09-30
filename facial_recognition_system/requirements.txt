@@ -4,3 +4,4 @@ opencv-python
 numpy
 face_recognition
 django-cors-headers  # Required for CORS support
+requests  # Required for API testing

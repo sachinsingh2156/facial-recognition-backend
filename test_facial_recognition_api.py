@@ -20,7 +20,11 @@ register_payload = {
     "face_image": base64_image
 }
 register_response = requests.post(register_url, json=register_payload)
-print("Registration Response:", register_response.status_code, register_response.json())
+print("Registration Response:", register_response.status_code)
+try:
+    print("Registration JSON:", register_response.json())
+except requests.exceptions.JSONDecodeError:
+    print("Registration Response Text:", register_response.text)
 
 # Authentication endpoint
 auth_url = 'http://localhost:8053/api/authentication/authenticate/'
@@ -28,4 +32,8 @@ auth_payload = {
     "face_image": base64_image
 }
 auth_response = requests.post(auth_url, json=auth_payload)
-print("Authentication Response:", auth_response.status_code, auth_response.json())
+print("Authentication Response:", auth_response.status_code)
+try:
+    print("Authentication JSON:", auth_response.json())
+except requests.exceptions.JSONDecodeError:
+    print("Authentication Response Text:", auth_response.text)
