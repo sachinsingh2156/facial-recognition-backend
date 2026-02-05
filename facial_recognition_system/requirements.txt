@@ -5,3 +5,5 @@ numpy
 face_recognition
 django-cors-headers  # Required for CORS support
 requests  # Required for API testing
+Pillow  # Required for image processing
+imagehash  # Required for duplicate image detection

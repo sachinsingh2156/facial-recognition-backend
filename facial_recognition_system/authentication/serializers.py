@@ -12,4 +12,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['unique_id', 'name', 'face_embedding', 'image_width', 'image_height', 'image_depth', 'image_size_limit'] 
+        fields = ['unique_id', 'name', 'face_embedding', 'image_width', 'image_height', 'image_depth', 'image_size_limit', 'image_hash'] 
