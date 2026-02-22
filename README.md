@@ -168,10 +168,27 @@ const fileToBase64 = (file) => {
 
 ## 🧪 Testing
 
-### **Automated Test Script**
+### **1. Unit tests (Django, run inside Docker)**
+Runs 14 tests for registration and authentication (validation, duplicate image, same-face reject, auth match/no-match). Requires Docker so `face_recognition` is available.
+
+**PowerShell:**
+```powershell
+docker-compose run --rm web python facial_recognition_system/manage.py test authentication -v 2
+```
+**Linux/macOS:** `./run_tests.sh` or the same `docker-compose run` command above.
+
+### **2. Integration tests (live server)**
+With the server running (`docker-compose up -d`), run against the real API (optional; needs a face image like `face_test.jpeg` or `1.jpg` in the project root):
+
+```bash
+python test_integration.py
+```
+
+### **3. Quick API script**
 ```bash
 python3 test_facial_recognition_api.py
 ```
+Set `image_path = 'face_test.jpeg'` (or your image) in the script.
 
 ### **Manual Testing with curl**
 ```bash

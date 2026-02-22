@@ -12,6 +12,9 @@ from .models import User
 from .serializers import UserSerializer
 from django.db import IntegrityError
 
+# Face match threshold: same person if distance <= this. Tune (e.g. 0.35–0.45) if needed.
+FACE_MATCH_TOLERANCE = 0.4
+
 # Helper function to decode base64 image to numpy array
 def decode_base64_image(base64_string):
     try:
@@ -55,7 +58,20 @@ class RegisterUser(APIView):
                 if not face_encodings:
                     return Response({"message": "Could not extract face encoding."}, status=status.HTTP_400_BAD_REQUEST)
                 face_encoding = face_encodings[0].tolist()  # Convert numpy array to list for storage
-                
+                face_encoding_np = np.array(face_encoding)
+
+                # Reject if this face is already registered under another member ID
+                for user in User.objects.exclude(face_embedding=""):
+                    try:
+                        stored_encoding = np.array(eval(user.face_embedding))
+                        distance = face_recognition.face_distance([stored_encoding], face_encoding_np)[0]
+                        if distance <= FACE_MATCH_TOLERANCE:
+                            return Response({
+                                "message": f"This face is already registered with another member (unique_id: {user.unique_id}, name: {user.name}). One person cannot be registered under multiple member IDs."
+                            }, status=status.HTTP_400_BAD_REQUEST)
+                    except (ValueError, SyntaxError):
+                        continue
+
                 # Save with image hash
                 serializer.save(face_embedding=face_encoding, image_hash=image_hash)
                 return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
@@ -84,18 +100,14 @@ class AuthenticateUser(APIView):
             face_encoding = face_encodings[0]
             
             # Find the best match instead of returning the first match
-            users = User.objects.all()
+            users = User.objects.exclude(face_embedding="")
             best_match = None
             best_distance = float('inf')
-            tolerance = 0.5  # Stricter tolerance for better accuracy
-            
+
             for user in users:
                 stored_encoding = np.array(eval(user.face_embedding))
-                # Calculate face distance instead of just boolean match
                 face_distance = face_recognition.face_distance([stored_encoding], face_encoding)[0]
-                
-                # If distance is within tolerance and better than current best match
-                if face_distance <= tolerance and face_distance < best_distance:
+                if face_distance <= FACE_MATCH_TOLERANCE and face_distance < best_distance:
                     best_match = user
                     best_distance = face_distance
             
