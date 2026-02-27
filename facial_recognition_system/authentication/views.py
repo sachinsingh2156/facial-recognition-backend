@@ -25,6 +25,7 @@ def decode_base64_image(base64_string):
     except Exception:
         return None
 
+
 class RegisterUser(APIView):
     def post(self, request, *args, **kwargs):
         try:
@@ -81,6 +82,7 @@ class RegisterUser(APIView):
         except Exception as e:
             return Response({"message": f"Server error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 class AuthenticateUser(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
@@ -120,3 +122,14 @@ class AuthenticateUser(APIView):
             else:
                 return Response({"message": "Authentication failed. No matching user found."}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteUser(APIView):
+    def delete(self, request, unique_id, *args, **kwargs):
+        try:
+            user = User.objects.get(unique_id=unique_id)
+        except User.DoesNotExist:
+            return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        user.delete()
+        return Response({"message": "User deleted successfully."}, status=status.HTTP_200_OK)

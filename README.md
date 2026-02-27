@@ -115,6 +115,20 @@ This Docker setup works on:
 - **Note:**
   - The backend matches the provided face image against all registered users. The `unique_id` field in the request is ignored for authentication.
 
+### 3. **Delete User**
+- **DELETE** `/api/authentication/delete/<unique_id>/`
+- **Description:** Permanently delete a registered user by their `unique_id`.
+- **Path Parameter:**
+  - `unique_id` (string): ID of the user to delete.
+- **Response (Success):**
+  ```json
+  { "message": "User deleted successfully." }
+  ```
+- **Response (User Not Found):**
+  ```json
+  { "message": "User not found." }
+  ```
+
 ---
 
 ## 🏗️ Backend Architecture Diagram
@@ -169,7 +183,7 @@ const fileToBase64 = (file) => {
 ## 🧪 Testing
 
 ### **1. Unit tests (Django, run inside Docker)**
-Runs 14 tests for registration and authentication (validation, duplicate image, same-face reject, auth match/no-match). Requires Docker so `face_recognition` is available.
+Runs 14 tests for registration, authentication, and delete (validation, duplicate image, same-face reject, auth match/no-match, delete success/not-found). Requires Docker so `face_recognition` is available.
 
 **PowerShell:**
 ```powershell
@@ -201,6 +215,9 @@ curl -X POST http://localhost:8053/api/authentication/register/ \
 curl -X POST http://localhost:8053/api/authentication/authenticate/ \
   -H "Content-Type: application/json" \
   -d '{"face_image": "YOUR_BASE64_IMAGE"}'
+
+# Delete user
+curl -X DELETE http://localhost:8053/api/authentication/delete/john123/
 ```
 
 ---

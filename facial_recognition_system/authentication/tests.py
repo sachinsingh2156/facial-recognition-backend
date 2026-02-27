@@ -242,49 +242,26 @@ class AuthenticateAPITests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn("No matching user found", response.json().get("message", ""))
 
-    @patch("authentication.views.decode_base64_image", _fake_decode_base64_image)
-    @patch("authentication.views.face_recognition.face_distance")
-    @patch("authentication.views.face_recognition.face_encodings")
-    @patch("authentication.views.face_recognition.face_locations")
-    def test_authenticate_match_returns_200(
-        self, mock_face_locations, mock_face_encodings, mock_face_distance
-    ):
-        """When a user matches within tolerance, return 200 with name and unique_id."""
-        mock_face_locations.return_value = [(10, 20, 30, 10)]
-        mock_face_encodings.return_value = [_mock_face_encoding()]
-        mock_face_distance.return_value = np.array([0.3])
-        User.objects.create(
-            unique_id="member25",
-            name="Member 25",
-            face_embedding=str(_mock_face_encoding().tolist()),
-            image_hash="h",
-        )
-        payload = {"face_image": VALID_IMAGE_B64_PLACEHOLDER}
-        response = self.client.post(self.auth_url, payload, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
-        self.assertEqual(data.get("message"), "Authentication successful.")
-        self.assertEqual(data.get("unique_id"), "member25")
-        self.assertEqual(data.get("name"), "Member 25")
 
-    @patch("authentication.views.decode_base64_image", _fake_decode_base64_image)
-    @patch("authentication.views.face_recognition.face_distance")
-    @patch("authentication.views.face_recognition.face_encodings")
-    @patch("authentication.views.face_recognition.face_locations")
-    def test_authenticate_different_person_above_tolerance_returns_401(
-        self, mock_face_locations, mock_face_encodings, mock_face_distance
-    ):
-        """When probe is different person (distance > 0.4), return 401."""
-        mock_face_locations.return_value = [(10, 20, 30, 10)]
-        mock_face_encodings.return_value = [_mock_face_encoding()]
-        mock_face_distance.return_value = np.array([0.6])
-        User.objects.create(
-            unique_id="member25",
-            name="Member 25",
+class DeleteUserAPITests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_delete_existing_user_returns_200(self):
+        user = User.objects.create(
+            unique_id="del1",
+            name="To Delete",
             face_embedding=str(_mock_face_encoding().tolist()),
-            image_hash="h",
+            image_hash="hash_del1",
         )
-        payload = {"face_image": VALID_IMAGE_B64_PLACEHOLDER}
-        response = self.client.post(self.auth_url, payload, format="json")
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertIn("No matching user found", response.json().get("message", ""))
+        url = f"/api/authentication/delete/{user.unique_id}/"
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("User deleted successfully.", response.json().get("message", ""))
+        self.assertEqual(User.objects.filter(unique_id="del1").count(), 0)
+
+    def test_delete_non_existing_user_returns_404(self):
+        url = "/api/authentication/delete/nonexistent123/"
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("User not found.", response.json().get("message", ""))

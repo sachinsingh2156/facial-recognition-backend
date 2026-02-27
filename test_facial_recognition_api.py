@@ -14,8 +14,9 @@ base64_image = image_to_base64(image_path)
 
 # Registration endpoint
 register_url = 'http://localhost:8053/api/authentication/register/'
+unique_id = 'ss2233'
 register_payload = {
-    "unique_id": "ss2233",
+    "unique_id": unique_id,
     "name": "sahil",
     "face_image": base64_image
 }
@@ -37,3 +38,12 @@ try:
     print("Authentication JSON:", auth_response.json())
 except requests.exceptions.JSONDecodeError:
     print("Authentication Response Text:", auth_response.text)
+
+# Delete endpoint
+delete_url = f'http://localhost:8053/api/authentication/delete/{unique_id}/'
+delete_response = requests.delete(delete_url)
+print("Delete Response:", delete_response.status_code)
+try:
+    print("Delete JSON:", delete_response.json())
+except requests.exceptions.JSONDecodeError:
+    print("Delete Response Text:", delete_response.text)
