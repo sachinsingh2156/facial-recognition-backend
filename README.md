@@ -129,6 +129,20 @@ This Docker setup works on:
   { "message": "User not found." }
   ```
 
+### 4. **List Registered Users**
+- **GET** `/api/authentication/users/`
+- **Description:** Returns all registered users (unique_id and name only; face data is not exposed).
+- **Response (Success):**
+  ```json
+  {
+    "users": [
+      { "unique_id": "user123", "name": "John Doe" },
+      { "unique_id": "user456", "name": "Jane Smith" }
+    ]
+  }
+  ```
+- Empty database returns `{ "users": [] }` with status 200.
+
 ---
 
 ## 🏗️ Backend Architecture Diagram
@@ -183,7 +197,7 @@ const fileToBase64 = (file) => {
 ## 🧪 Testing
 
 ### **1. Unit tests (Django, run inside Docker)**
-Runs 14 tests for registration, authentication, and delete (validation, duplicate image, same-face reject, auth match/no-match, delete success/not-found). Requires Docker so `face_recognition` is available.
+Runs 16 tests for registration, authentication, delete, and list users (validation, duplicate image, same-face reject, auth match/no-match, delete success/not-found, list empty/non-empty). Requires Docker so `face_recognition` is available.
 
 **PowerShell:**
 ```powershell

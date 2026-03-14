@@ -39,6 +39,15 @@ try:
 except requests.exceptions.JSONDecodeError:
     print("Authentication Response Text:", auth_response.text)
 
+# List all registered users
+list_url = 'http://localhost:8053/api/authentication/users/'
+list_response = requests.get(list_url)
+print("List Users Response:", list_response.status_code)
+try:
+    print("List Users JSON:", list_response.json())
+except requests.exceptions.JSONDecodeError:
+    print("List Users Response Text:", list_response.text)
+
 # Delete endpoint
 delete_url = f'http://localhost:8053/api/authentication/delete/{unique_id}/'
 delete_response = requests.delete(delete_url)

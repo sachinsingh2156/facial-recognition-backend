@@ -265,3 +265,42 @@ class DeleteUserAPITests(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn("User not found.", response.json().get("message", ""))
+
+
+class ListUsersAPITests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.list_url = "/api/authentication/users/"
+
+    def test_list_users_empty_returns_200(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), {"users": []})
+
+    def test_list_users_returns_all_unique_id_and_name(self):
+        User.objects.create(
+            unique_id="u1",
+            name="User One",
+            face_embedding=str(_mock_face_encoding().tolist()),
+            image_hash="h1",
+        )
+        User.objects.create(
+            unique_id="u2",
+            name="User Two",
+            face_embedding=str(_mock_face_encoding().tolist()),
+            image_hash="h2",
+        )
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertIn("users", data)
+        self.assertEqual(len(data["users"]), 2)
+        for item in data["users"]:
+            self.assertIn("unique_id", item)
+            self.assertIn("name", item)
+            self.assertNotIn("face_embedding", item)
+            self.assertNotIn("image_hash", item)
+        unique_ids = {u["unique_id"] for u in data["users"]}
+        names = {u["name"] for u in data["users"]}
+        self.assertEqual(unique_ids, {"u1", "u2"})
+        self.assertEqual(names, {"User One", "User Two"})

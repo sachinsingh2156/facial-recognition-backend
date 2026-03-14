@@ -133,3 +133,10 @@ class DeleteUser(APIView):
 
         user.delete()
         return Response({"message": "User deleted successfully."}, status=status.HTTP_200_OK)
+
+
+class ListUsers(APIView):
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all()
+        data = [{"unique_id": u.unique_id, "name": u.name} for u in users]
+        return Response({"users": data}, status=status.HTTP_200_OK)
